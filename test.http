@@ -1,0 +1,11 @@
+POST http://localhost:8087/submit
+content-type: application/json
+
+{
+  "studentId": "123.0",
+  "assignment" : {
+    "moduleCode": "CO7102",
+    "assignmentId": 12.0
+  },
+  "url": "test.url"
+}
