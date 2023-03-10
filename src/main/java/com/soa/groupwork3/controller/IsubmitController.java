@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Controller
 public class IsubmitController {
@@ -18,7 +19,14 @@ public class IsubmitController {
 
     @PostMapping("/submit")
     public ResponseEntity<String> makeSubmission(@RequestBody SubmitRequest request) {
+        System.out.println(request);
         try {
+            if (request.getStudentId() == 0) {
+                throw new IllegalArgumentException("please enter valid student id");
+            }
+            if (request.getAssignment() == null || request.getAssignment().getModuleCode() == ""  || request.getAssignment().getAssignmentId() == 0) {
+                throw new IllegalArgumentException("Please enter valid assignment details");
+            }
             var res = isubmitService.newSubmission(request.getStudentId(), request.getAssignment(), request.getUrl());
             return ResponseEntity.ok().body(res);
         } catch (Exception ex) {
