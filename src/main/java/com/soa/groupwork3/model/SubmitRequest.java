@@ -1,4 +1,4 @@
-package com.soa.groupwork3.entity;
+package com.soa.groupwork3.model;
 
 import com.soa.groupwork3.model.Assignment;
 

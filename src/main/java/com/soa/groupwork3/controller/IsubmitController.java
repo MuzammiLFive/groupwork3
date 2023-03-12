@@ -2,7 +2,8 @@ package com.soa.groupwork3.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soa.groupwork3.entity.SubmitRequest;
+import com.soa.groupwork3.model.ModuleFeebackRequest;
+import com.soa.groupwork3.model.SubmitRequest;
 import com.soa.groupwork3.service.IsubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,10 @@ public class IsubmitController {
         System.out.println(request);
         try {
             if (request.getStudentId() == 0) {
-                throw new IllegalArgumentException("please enter valid student id");
+                throw new IllegalArgumentException("Invalid student id");
             }
             if (request.getAssignment() == null || request.getAssignment().getModuleCode() == ""  || request.getAssignment().getAssignmentId() == 0) {
-                throw new IllegalArgumentException("Please enter valid assignment details");
+                throw new IllegalArgumentException("Invalid assignment details");
             }
             var res = isubmitService.newSubmission(request.getStudentId(), request.getAssignment(), request.getUrl());
             return ResponseEntity.ok().body(res);
@@ -47,11 +48,11 @@ public class IsubmitController {
         }
     }
 
-    @GetMapping("/module-feedback/{moduleCode}")
-    public ResponseEntity<String> getModuleFeedback(@PathVariable String moduleCode) {
+    @GetMapping("/module-feedback")
+    public ResponseEntity<String> getModuleFeedback(@RequestBody ModuleFeebackRequest request) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            var res = isubmitService.getAllFeedbackForModule(moduleCode);
+            var res = isubmitService.getAllFeedbackForModule(request.getModuleCode(), request.getStudentId());
             return ResponseEntity.ok().body(mapper.writeValueAsString(res));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

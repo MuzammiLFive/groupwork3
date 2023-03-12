@@ -5,11 +5,8 @@ import com.soa.groupwork3.model.Assignment;
 import com.soa.groupwork3.model.Feedback;
 import com.soa.groupwork3.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -40,8 +37,8 @@ public class IsubmitService {
         return new Feedback(submitted.getFeedback(), submitted.getModuleCode(), submitted.getAssignmentId());
     }
 
-    public List<Feedback> getAllFeedbackForModule(String moduleCode) {
-        var records = submissionRepository.getAllByModuleCode(moduleCode);
+    public List<Feedback> getAllFeedbackForModule(String moduleCode, int studentId) {
+        var records = submissionRepository.getAllByModuleCodeAndStudentId(moduleCode, studentId);
         return records.stream().map(x -> new Feedback(x.getFeedback(), x.getModuleCode(), x.getAssignmentId()))
                 .collect(Collectors.toList());
     }
