@@ -7,6 +7,7 @@ import com.soa.groupwork3.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -16,7 +17,12 @@ public class IsubmitService {
     @Autowired
     private SubmissionRepository submissionRepository;
 
-    public String newSubmission(int studentId, Assignment assignment, String url) {
+    public String newSubmission(int studentId, Assignment assignment, String url) throws FileAlreadyExistsException {
+        var existingRecord = submissionRepository.getByFileUrl(url);
+        if (existingRecord != null) {
+            throw new FileAlreadyExistsException("File already submitted");
+        }
+
         var newRecord = new Submission();
         System.out.println(newRecord.getId());
         newRecord.setFileUrl(url);

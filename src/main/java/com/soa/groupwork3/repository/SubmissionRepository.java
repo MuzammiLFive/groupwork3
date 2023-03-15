@@ -11,5 +11,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     Submission getById(Integer id);
 
+    Submission getByFileUrl(String url);
+
     List<Submission> getAllByModuleCodeAndStudentId(String moduleCode, int studentId);
 }
